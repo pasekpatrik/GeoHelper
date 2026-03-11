@@ -1,24 +1,20 @@
 import styles from './Nav.css?inline';
 
 export class Nav extends HTMLElement {
-    private shadow;
-
     constructor() {
         super();
-        this.shadow = this.attachShadow({ mode: 'open' });
-        this.render();
-
-        this.animation();
     }
 
-    public animation = () => {
+    connectedCallback() {
+        this.render();
+
         window.addEventListener('load', () => {
-            this.shadow.querySelector('.default-nav')?.classList.add('animation-nav');
-        })
+            this.querySelector('.default-nav')?.classList.add('animation-nav');
+        });
     }
 
     public render = () => {
-        this.shadow.innerHTML = `
+        this.innerHTML = `
             <style>${styles}</style>
             <div class="navbar bg-base-100 shadow-smc default-nav" data-theme="dark">
                 <div class="navbar-start">
@@ -30,14 +26,14 @@ export class Nav extends HTMLElement {
                           tabindex="-1"
                           class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                         >
-                          <li><a>Homepage</a></li>
-                          <li><a>Portfolio</a></li>
-                          <li><a>About</a></li>
+                          <li><a href="/">Catching</a></li>
+                          <li><a href="/statistics">Statistics</a></li>
+                          <li><a href="/settings">Settings</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="navbar-end">
-                    <a class="btn btn-ghost text-xl">GeoHelper</a>
+                    <a class="btn btn-ghost text-xl" href="/">GeoHelper</a>
                 </div>
             </div>  
         `;
