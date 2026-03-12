@@ -2,9 +2,11 @@ import type Page from '../pages/Page';
 
 export class Router {
     private pages: Array<Page>;
+    private pageNotFound: Page;
 
-    constructor(pages: Array<Page>){
+    constructor(pages: Array<Page>, pageNotFound: Page){
         this.pages = pages;
+        this.pageNotFound = pageNotFound;
 
         this.router(window.location.href);
 
@@ -27,13 +29,10 @@ export class Router {
     public router = (href: string) => {
         const url = new URL(href);
 
-        for (let page of this.pages) {
-            if (url.pathname == page.key) {
-                page.showPage();
-                return;
-            }
-        }
+        const page = this.pages.find((page) => {
+            return url.pathname == page.key;
+        })
 
-        this.router(url.origin + '/404')
+        page ? page?.showPage() : this.pageNotFound.showPage();
     }
 }

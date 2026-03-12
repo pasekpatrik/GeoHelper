@@ -27,9 +27,9 @@ export default class App {
             [
                 new Catching('/', 'Catching', content), 
                 new Statistics("/statistics", "Statistics", content),
-                new Settings("/settings", "Settings", content),
-                new PageNotFound("/404", "Page not found", content)
-            ]
+                new Settings("/settings", "Settings", content)
+            ],
+            new PageNotFound("/404", "Page not found", content)
         )
 
         root.append(navBar, content);
