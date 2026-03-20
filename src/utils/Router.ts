@@ -18,6 +18,7 @@ export class Router {
             let element = event.target as HTMLAnchorElement;
 
             if (element.tagName === 'A') {
+                
                 event.preventDefault();
 
                 this.router(element.href);

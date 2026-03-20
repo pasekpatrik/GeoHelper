@@ -1,26 +1,33 @@
 export class Storage {
-    private key: string;
+    private static instance: Storage | null = null;
 
-    constructor(key: string) {
-        this.key = key;
-        localStorage.setItem(key, JSON.stringify([]));
+    private constructor () {}
+
+    public static getInstance() {
+        if (this.instance === null) {
+            this.instance = new Storage();
+        }
+
+        return this.instance;
     }
 
-    public setItem = (item: object) => {
+    public setItem = (key: string, item: object) => {
         if (!Object.keys(item).length) {
             console.warn('Warn: item is empty');
             return;
         }
 
-        let data = this.getItems();
+        if (!this.getItems(key)) localStorage.setItem(key, JSON.stringify([]));
+
+        let data = this.getItems(key);
         // @ts-ignore
         data.push(item);
      
-        localStorage.setItem(this.key, JSON.stringify(data));
+        localStorage.setItem(key, JSON.stringify(data));
     }
 
-    public getItems = () : object | void => {
-        let data = localStorage.getItem(this.key);
+    public getItems = (key: string) : object | void => {
+        let data = localStorage.getItem(key);
 
         if (!data) {
             console.warn('Warn: data does not exist');
@@ -32,9 +39,5 @@ export class Storage {
 
     public clear = () => {
         localStorage.clear()
-    }
-
-    public getKey = () => {
-        return this.key;
     }
 }

@@ -16,5 +16,8 @@ export default class Page {
     public showPage = () => {
         this.element.innerHTML = this.render();
         document.title = this.title;
+        this.pageIsAvailable()
     }
+
+    public pageIsAvailable = () => {}
 }

@@ -1,11 +1,11 @@
 // @ts-ignore
 import { Nav } from "../components/Nav/Nav";
 import { Catching } from "../pages/Catching";
+import { Home } from "../pages/Home";
 import { PageNotFound } from "../pages/PageNotFound";
 import { Settings } from "../pages/Settings";
 import { Statistics } from "../pages/Statistics";
 import { Router } from "../utils/Router";
-import { Storage } from "../utils/Storage";
 
 export default class App {
     private static instance: App | null = null;
@@ -26,17 +26,14 @@ export default class App {
 
         new Router(
             [
-                new Catching('/', 'Catching', content), 
+                new Home('/', 'Home', content), 
                 new Statistics("/statistics", "Statistics", content),
-                new Settings("/settings", "Settings", content)
+                new Settings("/settings", "Settings", content),
+                new Catching("/catching", "Catching", content)
             ],
             new PageNotFound("/404", "Page not found", content)
         )
 
         root.append(navBar, content);
-
-        const storage = new Storage("caching");
-
-
     }
 }
