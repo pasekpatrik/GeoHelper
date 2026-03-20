@@ -5,6 +5,7 @@ import { PageNotFound } from "../pages/PageNotFound";
 import { Settings } from "../pages/Settings";
 import { Statistics } from "../pages/Statistics";
 import { Router } from "../utils/Router";
+import { Storage } from "../utils/Storage";
 
 export default class App {
     private static instance: App | null = null;
@@ -33,5 +34,9 @@ export default class App {
         )
 
         root.append(navBar, content);
+
+        const storage = new Storage("caching");
+
+
     }
 }
