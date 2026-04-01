@@ -1,12 +1,17 @@
 import type Page from '../pages/Page';
 
+
+// TODO refactor
 export class Router {
     private pages: Array<Page>;
     private pageNotFound: Page;
+    private static instance: Router | null = null;
 
     constructor(pages: Array<Page>, pageNotFound: Page){
         this.pages = pages;
         this.pageNotFound = pageNotFound;
+
+        Router.instance = this;
 
         this.router(window.location.href);
 
@@ -35,5 +40,15 @@ export class Router {
         })
 
         page ? page?.showPage() : this.pageNotFound.showPage();
+    }
+
+    public static navigate = (href: string) => {
+        const absoluteUrl = href.startsWith('http') 
+            ? href 
+            : window.location.origin + href;
+
+        window.history.pushState(null, '', absoluteUrl);
+
+        Router.instance?.router(absoluteUrl);
     }
 }
