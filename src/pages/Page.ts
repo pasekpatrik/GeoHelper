@@ -7,6 +7,12 @@ export default class Page {
         this.key = key;
         this.title = title;
         this.element = element;
+
+        this.pageIsCreated();
+
+        this.element.addEventListener('click', (event) => {
+            this.handleGlobalClicks(event);
+        });
     }
 
     public render = () => {
@@ -20,5 +26,11 @@ export default class Page {
         this.pageIsAvailable();
     }
 
+    // When is page is created (Constructor)
+    public pageIsCreated(){}
+    
+    // When is page render
     public pageIsAvailable = () => {}
+
+    protected handleGlobalClicks(event: Event) {}
 }

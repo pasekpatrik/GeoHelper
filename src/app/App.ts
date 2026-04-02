@@ -23,6 +23,7 @@ export default class App {
     public run = (root: HTMLElement) => {
         const navBar = document.createElement('nav-bar');
         const content = document.createElement('div');
+        content.classList.add('container');
 
         const router: Router = Router.getInstance();
         router.init([
