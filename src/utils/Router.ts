@@ -30,8 +30,8 @@ export class Router {
             if (element.tagName === 'A') {
                 event.preventDefault();
 
-                this.router(element.href);
                 window.history.pushState(null, '', element.href);
+                this.router(element.href);
             }
         });
     }

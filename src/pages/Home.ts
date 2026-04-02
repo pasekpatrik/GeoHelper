@@ -39,7 +39,11 @@ export class Home extends Page {
     override render = () => {
         return `
             <ul class="list bg-base-100 rounded-box shadow-md">
-                <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">All Cathings</li>
+                <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">${this.catchingService.getAllCatchings().length !== 0 ? 
+                  "All catchings" 
+                  : "There is nothing!" 
+                }
+                  </li>
                 ${
                     this.catchingService.getAllCatchings().map((catching: CatchingInterface) => {
                         return `
@@ -110,7 +114,7 @@ export class Home extends Page {
                 <div class="modal-action">
                   <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn" id="btn-create">Create</a>
+                    <button class="btn" id="btn-create">Create</button>
                     <button class="btn">Close</button>
                   </form>
                 </div>

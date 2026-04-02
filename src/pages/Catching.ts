@@ -1,4 +1,5 @@
 import { CatchingService } from '../service/CatchingService';
+import { type CatchingInterface } from '../types/CatchingInterface';
 import Page from './Page';
 
 export class Catching extends Page {
@@ -9,15 +10,15 @@ export class Catching extends Page {
     }
 
     public pageIsAvailable = () => {
-        const id: string = this.catchingService.getParams('id') ?? '';
-        const catching = this.catchingService.getCatching(id)
-
-        console.log(catching);
+       
     }
 
     override render = () => {
+        const id: string = this.catchingService.getParams('id') ?? '';
+        const catching: CatchingInterface | undefined = this.catchingService.getCatching(id);
+
         return `
-            <div>Catching</div>
+            <h1>${catching?.name}</h1>
         `;
     }
 }
