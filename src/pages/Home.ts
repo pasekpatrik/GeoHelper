@@ -4,12 +4,13 @@ import { Router } from '../utils/Router';
 
 export class Home extends Page {
     private storage = Storage.getInstance();
+    private router = Router.getInstance();
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element);
     }
 
-    private createCatching = (id: string, name: string, ) => {
+    private createCatching = (id: string, name: string) => {
         this.storage.setItem('catching', {
             id: id,
             name: name
@@ -30,8 +31,7 @@ export class Home extends Page {
             this.createCatching(uuid, 'test');
             console.log('create catching' + uuid);
 
-            // TODO refactor
-            Router.navigate(window.location.origin + `/catching?item=${uuid}`);
+            this.router.navigate(window.location.origin + `/catching?item=${uuid}`);
         });
     }
 

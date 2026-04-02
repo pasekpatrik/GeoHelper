@@ -1,17 +1,22 @@
 import type Page from '../pages/Page';
 
-
 // TODO refactor
 export class Router {
-    private pages: Array<Page>;
-    private pageNotFound: Page;
+    private pages: Array<Page> | null = null;
+    private pageNotFound: Page | null= null;
     private static instance: Router | null = null;
 
-    constructor(pages: Array<Page>, pageNotFound: Page){
+    private constructor() {}
+
+    public static getInstance = () => {
+        if (this.instance === null) this.instance = new Router();
+
+        return this.instance;
+    }
+
+    public init = (pages: Array<Page>, pageNotFound: Page) => {
         this.pages = pages;
         this.pageNotFound = pageNotFound;
-
-        Router.instance = this;
 
         this.router(window.location.href);
 
@@ -23,7 +28,6 @@ export class Router {
             let element = event.target as HTMLAnchorElement;
 
             if (element.tagName === 'A') {
-                
                 event.preventDefault();
 
                 this.router(element.href);
@@ -35,20 +39,16 @@ export class Router {
     public router = (href: string) => {
         const url = new URL(href);
 
-        const page = this.pages.find((page) => {
+        const page = this.pages?.find((page) => {
             return url.pathname == page.key;
         })
 
-        page ? page?.showPage() : this.pageNotFound.showPage();
+        page ? page?.showPage() : this.pageNotFound?.showPage();
     }
 
-    public static navigate = (href: string) => {
-        const absoluteUrl = href.startsWith('http') 
-            ? href 
-            : window.location.origin + href;
+    public navigate = (href: string) => {
+        window.history.pushState(null, '', href);
 
-        window.history.pushState(null, '', absoluteUrl);
-
-        Router.instance?.router(absoluteUrl);
+        this.router(href);
     }
 }

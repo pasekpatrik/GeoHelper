@@ -4,9 +4,7 @@ export class Storage {
     private constructor () {}
 
     public static getInstance() {
-        if (this.instance === null) {
-            this.instance = new Storage();
-        }
+        if (this.instance === null) this.instance = new Storage();
 
         return this.instance;
     }

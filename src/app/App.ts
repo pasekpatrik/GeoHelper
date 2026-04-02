@@ -24,16 +24,16 @@ export default class App {
         const navBar = document.createElement('nav-bar');
         const content = document.createElement('div');
 
-        new Router(
-            [
-                new Home('/', 'Home', content), 
-                new Statistics("/statistics", "Statistics", content),
-                new Settings("/settings", "Settings", content),
-                new Catching("/catching", "Catching", content)
-            ],
-            new PageNotFound("/404", "Page not found", content)
-        )
-
+        const router: Router = Router.getInstance();
+        router.init([
+            new Home('/', 'Home', content), 
+            new Statistics('/statistics', 'Statistics', content),
+            new Settings('/settings', 'Settings', content),
+            new Catching('/catching', 'Catching', content)
+        ],  
+            new PageNotFound('/404', 'Page not found', content)
+        );
+        
         root.append(navBar, content);
     }
 }
