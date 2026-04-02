@@ -32,5 +32,5 @@ export default class Page {
     // When is page render
     public pageIsAvailable = () => {}
 
-    protected handleGlobalClicks(event: Event) {}
+    protected handleGlobalClicks(_event: Event) {}
 }

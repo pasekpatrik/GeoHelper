@@ -5,9 +5,9 @@ export class AbstractDAO {
 
     constructor() {}
 
-    public create = (data: any) => {}
+    public create = (_data: any) => {}
     public findAll = () => {}
-    public find = (id: string) => {}
-    public update = (id: string) => {}
-    public delete = (id: string) => {}
+    public find = (_id: string) => {}
+    public update = (_id: string) => {}
+    public delete = (_id: string) => {}
 }
