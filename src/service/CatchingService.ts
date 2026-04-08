@@ -1,9 +1,12 @@
 import { Repository } from '../storage/Repository';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import { decimalToDegrees } from '../utils/calculator';
 
 export class CatchingService {
     private repository = new Repository('catching');
+    public map: any;
+    public coords: any;
 
     public createCatching = (id: string, name: string) => {
         this.repository.create({
@@ -29,28 +32,62 @@ export class CatchingService {
         return params.get(param); 
     }
 
-    public initMap = (latitude: number, longitude: number, idElement: string) => {
-        const map = L.map(idElement).setView([latitude, longitude], 13);
+    public convertInputToDegree = (input: HTMLInputElement) => {
+        let newInput = input.value.split(" ")
+        let coordinates = []
 
-	    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        for (let coor of newInput) {
+            coordinates.push(Number(coor))
+        }
+
+        return decimalToDegrees(coordinates[0] ?? 0, coordinates[1] ?? 0, coordinates[2] ?? 0)
+    }
+
+    public initMap = (idElement: string) => {
+        if (this.map) {
+            this.map.remove();
+        }
+
+        this.map = L.map(idElement);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		    maxZoom: 19,
 		    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	    }).addTo(map);
+	    }).addTo(this.map);
+    }
 
-         L.marker([latitude, longitude]).addTo(map)
+    public startMap = (latitude: number, longitude: number, idElement: string) => {
+        this.initMap(idElement);
 
-         L.Routing.control({
-            waypoints: [
-              L.latLng(latitude, longitude),
-              L.latLng(50.0900, 14.4500)
-            ],
-            routeWhileDragging: true
-          }).addTo(map);
+        this.map.setView([latitude, longitude], 13);
 
-        map.on('click' , () => {
+        L.marker([latitude, longitude]).addTo(this.map)
+
+        this.map.on('click' , () => {
             document.getElementById(idElement)?.requestFullscreen();
         })
     }
+
+    public findPath = async (latitude: number, longitude: number, idElement: string) => {
+        this.initMap(idElement);
+        
+        this.coords = await this.getGeoLocation();
+
+        L.Routing.control({
+            waypoints: [
+              L.latLng(this.coords.latitude, this.coords.longitude),
+              L.latLng(latitude, longitude)
+            ],
+            routeWhileDragging: true
+        }).addTo(this.map);
+
+        L.circle([latitude, longitude], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 30
+        }).addTo(this.map);
+    } 
 
     public getGeoLocation = (): Promise<{ latitude: number, longitude: number }> => {
         return new Promise((resolve, reject) => {

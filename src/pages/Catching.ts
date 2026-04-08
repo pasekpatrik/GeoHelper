@@ -11,10 +11,21 @@ export class Catching extends Page {
         super(key, title, element)
     }
 
+    protected override handleGlobalClicks(event: Event) {
+        const target = event.target as HTMLElement;
+    
+        if (target.closest('#btn-submit')) {
+            const latitude = document.getElementById('input-latitude') as HTMLInputElement;
+            const longitude = document.getElementById('input-longitude') as HTMLInputElement;
+
+            this.catchingService.findPath(this.catchingService.convertInputToDegree(latitude), 
+                                    this.catchingService.convertInputToDegree(longitude), 'map');
+        }
+    }
+
     public pageIsAvailable = async () => {
-       // this.catchingService.initMap();
        const coords = await this.catchingService.getGeoLocation();
-       this.catchingService.initMap(coords.latitude, coords.longitude, 'map');
+       this.catchingService.startMap(coords.latitude, coords.longitude, 'map');
     }
 
     override render = () => {
@@ -29,13 +40,15 @@ export class Catching extends Page {
                 <div class="" data-theme="light">
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Latitude</legend>
-                        <input type="text" class="input" placeholder="Type here" />
+                        <input type="text" class="input" id="input-latitude" placeholder="Type here" />
                     </fieldset>
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Longitude</legend>
-                        <input type="text" class="input" placeholder="Type here" />
+                        <input type="text" class="input" id="input-longitude" placeholder="Type here" />
                     </fieldset>
+                    <button class="btn" id="btn-submit">Submit</button>
                 </div>
+
                 <!--
                 <div class="ml-8 flex flex flex-col" data-theme="light">
                     <label>
@@ -57,7 +70,6 @@ export class Catching extends Page {
                 </div>
                 -->
             </div>
-            
             
         `;
     }
