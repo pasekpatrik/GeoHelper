@@ -1,8 +1,8 @@
 import { CatchingService } from '../service/CatchingService';
-import { type CatchingInterface } from '../types/CatchingInterface';
 import Page from './Page';
 // @ts-ignore
 import { Map } from '../components/Map/Map';
+import type { CatchingInterface } from '../types/CatchingInterface';
 
 export class Catching extends Page {
     private catchingService = new CatchingService();
@@ -19,7 +19,7 @@ export class Catching extends Page {
 
     override render = () => {
         const id: string = this.catchingService.getParams('id') ?? '';
-        const catching: CatchingInterface | undefined = this.catchingService.getCatching(id);
+        const catching: CatchingInterface = this.catchingService.getCatching(id);
 
         return `
             <h1 class="text-5xl font-bold m-4">${catching?.name}</h1>
@@ -36,7 +36,7 @@ export class Catching extends Page {
                         <input type="text" class="input" placeholder="Type here" />
                     </fieldset>
                 </div>
-
+                <!--
                 <div class="ml-8 flex flex flex-col" data-theme="light">
                     <label>
                         Catch
@@ -55,7 +55,7 @@ export class Catching extends Page {
                         <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
                     </label>
                 </div>
-
+                -->
             </div>
             
             

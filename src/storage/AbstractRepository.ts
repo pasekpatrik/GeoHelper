@@ -1,6 +1,6 @@
 import { Storage } from './Storage'
 
-export class AbstractDAO {
+export class AbstractRepository {
     protected storage = Storage.getInstance();
 
     constructor() {}

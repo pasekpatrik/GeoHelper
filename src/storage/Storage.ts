@@ -24,6 +24,10 @@ export class Storage {
         localStorage.setItem(key, JSON.stringify(data));
     }
 
+    public setItems = (key: string, data: object) => {
+        localStorage.setItem(key, JSON.stringify(data));
+    }
+
     public getItems = (key: string) : object | void => {
         let data = localStorage.getItem(key);
 

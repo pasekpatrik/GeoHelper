@@ -1,23 +1,27 @@
-import { CatchingDAO } from '../storage/CatchingDAO';
+import { Repository } from '../storage/Repository';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 
 export class CatchingService {
-    private catchingDAO = new CatchingDAO();
+    private repository = new Repository('catching');
 
     public createCatching = (id: string, name: string) => {
-        this.catchingDAO.create({
+        this.repository.create({
             id: id,
             name: name
         })
     }
 
     public getCatching = (id: string) => {
-        return this.catchingDAO.find(id);
+        return this.repository.find(id);
     }
 
     public getAllCatchings = () => {
-        return this.catchingDAO.findAll();
+        return this.repository.findAll();
+    }
+
+    public deleteCatching = (id: string) => {
+        this.repository.delete(id);
     }
 
     public getParams = (param: string) => {
@@ -28,14 +32,14 @@ export class CatchingService {
     public initMap = (latitude: number, longitude: number, idElement: string) => {
         const map = L.map(idElement).setView([latitude, longitude], 13);
 
-	    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		    maxZoom: 19,
 		    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	    }).addTo(map);
 
-        const marker = L.marker([latitude, longitude]).addTo(map)
+         L.marker([latitude, longitude]).addTo(map)
 
-        const control = L.Routing.control({
+         L.Routing.control({
             waypoints: [
               L.latLng(latitude, longitude),
               L.latLng(50.0900, 14.4500)

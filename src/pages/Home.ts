@@ -30,11 +30,16 @@ export class Home extends Page {
 
             this.router.navigate(window.location.origin + `/catching?id=${uuid}`);
         }
-    }
 
-    public pageIsAvailable = () => {
         
-    };
+        if (target.closest('#btn-delete')) {
+          const id: string = target.dataset.id ?? ''
+          this.catchingService.deleteCatching(id);
+
+          this.router.navigate(window.location.origin);
+        }
+        
+    }
 
     override render = () => {
         return `
@@ -55,7 +60,7 @@ export class Home extends Page {
                                   <a href="/catching?id=${catching.id}">${catching.name}</a>
                                   <div class="text-xs uppercase font-semibold opacity-60">Lorem ipsum</div>
                                 </div>
-                                <button class="btn btn-square btn-ghost">
+                                <button class="btn btn-square btn-ghost" id="btn-delete" data-id="${catching.id}">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Bin-1--Streamline-Ultimate" height="24" width="24">
                                 <desc>
                                     Bin 1 Streamline Icon: https://streamlinehq.com
@@ -67,9 +72,9 @@ export class Home extends Page {
                                 <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" d="M18.86 21.62c-0.0278 0.3758 -0.197 0.7271 -0.4735 0.9832 -0.2764 0.256 -0.6397 0.3978 -1.0165 0.3968H6.63c-0.37683 0.001 -0.74006 -0.1408 -1.01653 -0.3968 -0.27647 -0.2561 -0.44565 -0.6074 -0.47347 -0.9832L3.75 5h16.5l-1.39 16.62Z" stroke-width="1.5"></path>
                                 </svg>
                                 </button>
-                                <button class="btn btn-square btn-ghost">
+                                <!-- <button class="btn btn-square btn-ghost" >
                                   <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-                                </button>
+                                </button> -->
                             </li>
                         `
                     }).join('')
