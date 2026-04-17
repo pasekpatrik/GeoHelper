@@ -48,12 +48,16 @@ export class CatchingService {
             this.map.remove();
         }
 
-        this.map = L.map(idElement);
+        this.map = L.map(idElement).fitWorld();
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		    maxZoom: 19,
 		    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	    }).addTo(this.map);
+
+        this.map.on('click' , () => {
+            document.getElementById(idElement)?.requestFullscreen();
+        })
     }
 
     public startMap = (latitude: number, longitude: number, idElement: string) => {
@@ -62,10 +66,6 @@ export class CatchingService {
         this.map.setView([latitude, longitude], 13);
 
         L.marker([latitude, longitude]).addTo(this.map)
-
-        this.map.on('click' , () => {
-            document.getElementById(idElement)?.requestFullscreen();
-        })
     }
 
     public findPath = async (latitude: number, longitude: number, idElement: string) => {

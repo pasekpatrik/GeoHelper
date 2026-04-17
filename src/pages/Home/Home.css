@@ -1,0 +1,7 @@
+.warning {
+    display: none;
+}
+
+.warning.show {
+    display: flex;
+}

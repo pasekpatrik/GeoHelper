@@ -1,7 +1,7 @@
 // @ts-ignore
 import { Nav } from "../components/Nav/Nav";
 import { Catching } from "../pages/Catching";
-import { Home } from "../pages/Home";
+import { Home } from "../pages/Home/Home";
 import { PageNotFound } from "../pages/PageNotFound";
 import { Settings } from "../pages/Settings";
 import { Statistics } from "../pages/Statistics";

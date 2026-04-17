@@ -1,7 +1,9 @@
-import Page from './Page';
-import { Router } from '../utils/Router';
-import { CatchingService } from '../service/CatchingService';
-import { type CatchingInterface } from "../types/CatchingInterface";
+import styles from './Home.css?inline';
+
+import Page from '../Page';
+import { Router } from '../../utils/Router';
+import { CatchingService } from '../../service/CatchingService';
+import { type CatchingInterface } from "../../types/CatchingInterface";
 
 export class Home extends Page {
     private catchingService = new CatchingService();
@@ -13,36 +15,50 @@ export class Home extends Page {
 
     protected override handleGlobalClicks(event: Event) {
         const target = event.target as HTMLElement;
+         // @ts-ignore
+         const id: string = target.closest('#btn-catching')?.dataset.id ?? '';
     
-        if (target.closest('#btn-catching')) {
+        if (target.closest('#btn-earth')) {
             const modal = this.element.querySelector<HTMLDialogElement>('#my_modal_1');
             modal?.showModal();
+            return;
         }
     
         if (target.closest('#btn-create')) {
             event.preventDefault();
 
             const name = document.getElementById('input-catching-name') as HTMLInputElement;
+
+            if (!name.value || name.value.length > 16) {
+              document.querySelector('.warning')?.classList.add('show');
+              return;
+            }
+
             const uuid = self.crypto.randomUUID();
             this.catchingService.createCatching(uuid, name?.value);
 
             console.log('create catching ' + uuid);
 
             this.router.navigate(window.location.origin + `/catching?id=${uuid}`);
+            return;
         }
 
-        
         if (target.closest('#btn-delete')) {
-          const id: string = target.dataset.id ?? ''
-          this.catchingService.deleteCatching(id);
+         this.catchingService.deleteCatching(id);
 
-          this.router.navigate(window.location.origin);
+         this.router.navigate(window.location.origin);
+         return;
+       }
+
+        if (target.closest('#btn-catching')) {
+          this.router.navigate(window.location.origin + `/catching?id=${id}`);
+          return;
         }
-        
     }
 
     override render = () => {
         return `
+          <style>${styles}</style>
             <ul class="list bg-base-100 rounded-box shadow-md">
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">${this.catchingService.getAllCatchings().length !== 0 ? 
                   "All catchings" 
@@ -52,7 +68,7 @@ export class Home extends Page {
                 ${
                     this.catchingService.getAllCatchings().map((catching: CatchingInterface) => {
                         return `
-                            <li class="list-row">
+                            <li class="list-row" id="btn-catching" data-id="${catching.id}">
                                 <div>
                                     <img class="size-10 rounded-box" src="earth1.png">
                                 </div>
@@ -60,7 +76,7 @@ export class Home extends Page {
                                   <a href="/catching?id=${catching.id}">${catching.name}</a>
                                   <div class="text-xs uppercase font-semibold opacity-60">Lorem ipsum</div>
                                 </div>
-                                <button class="btn btn-square btn-ghost" id="btn-delete" data-id="${catching.id}">
+                                <button class="btn btn-square btn-ghost" id="btn-delete">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Bin-1--Streamline-Ultimate" height="24" width="24">
                                 <desc>
                                     Bin 1 Streamline Icon: https://streamlinehq.com
@@ -97,7 +113,7 @@ export class Home extends Page {
 
                 <button 
                     class="btn btn-lg btn-circle" 
-                    id="btn-catching" 
+                    id="btn-earth" 
                     data-theme="light"
                 >
                     🌍
@@ -113,9 +129,17 @@ export class Home extends Page {
                         type="text" 
                         class="input"
                         id="input-catching-name" 
-                        placeholder="Type here" 
+                        placeholder="Type here"
                     />
                 </fieldset>
+                <div class="warning bg-orange-200 px-6 py-4 my-4 rounded-md text-sm">
+                      <svg viewBox="0 0 24 24" class="text-yellow-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+                        <path fill="currentColor"
+                            d="M23.119,20,13.772,2.15h0a2,2,0,0,0-3.543,0L.881,20a2,2,0,0,0,1.772,2.928H21.347A2,2,0,0,0,23.119,20ZM11,8.423a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Zm1.05,11.51h-.028a1.528,1.528,0,0,1-1.522-1.47,1.476,1.476,0,0,1,1.448-1.53h.028A1.527,1.527,0,0,1,13.5,18.4,1.475,1.475,0,0,1,12.05,19.933Z">
+                        </path>
+                      </svg>
+                      <span class="text-yellow-800">Name must be between 1 and 16 characters long.</span>
+                    </div>
                 <div class="modal-action">
                   <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
