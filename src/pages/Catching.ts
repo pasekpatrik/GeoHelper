@@ -48,8 +48,8 @@ export class Catching extends Page {
             const updateCatching: CatchingInterface = {
                 id: this.catching?.id ?? '',
                 name: this.catching?.name ?? '',
-                latitude: this.catching?.latitude ?? 0,
-                longitude: this.catching?.longitude ?? 0,
+                latitude: this.catching?.latitude ?? null,
+                longitude: this.catching?.longitude ?? null,
                 isCatch: !this.catching?.isCatch
             }
 
