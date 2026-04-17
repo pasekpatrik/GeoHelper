@@ -78,7 +78,16 @@ export class CatchingService {
               L.latLng(this.coords.latitude, this.coords.longitude),
               L.latLng(latitude, longitude)
             ],
-            routeWhileDragging: true
+            router: (L as any).Routing.osrmv1({
+                serviceUrl: 'https://routing.openstreetmap.de/routed-foot/route/v1',
+                profile: 'foot',
+            }),
+             // @ts-ignore
+            lineOptions: {
+                styles: [{ color: 'green', opacity: 0.7, weight: 5 }]
+            },
+            show: false,
+            addWaypoints: false
         }).addTo(this.map);
 
         L.circle([latitude, longitude], {
