@@ -8,6 +8,6 @@ export class AbstractRepository {
     public create = (_data: any) => {}
     public findAll = () => {}
     public find = (_id: string) => {}
-    public update = (_id: string) => {}
+    public update = (_id: string, _data: object) => {}
     public delete = (_id: string) => {}
 }

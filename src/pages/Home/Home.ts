@@ -19,7 +19,7 @@ export class Home extends Page {
          const id: string = target.closest('#btn-catching')?.dataset.id ?? '';
     
         if (target.closest('#btn-earth')) {
-            const modal = this.element.querySelector<HTMLDialogElement>('#my_modal_1');
+            const modal = this.element.querySelector('#my_modal_1') as HTMLDialogElement;
             modal?.showModal();
             return;
         }
@@ -30,12 +30,12 @@ export class Home extends Page {
             const name = document.getElementById('input-catching-name') as HTMLInputElement;
 
             if (!name.value || name.value.length > 16) {
-              document.querySelector('.warning')?.classList.add('show');
-              return;
+                document.querySelector('.warning')?.classList.add('show');
+                return;
             }
 
             const uuid = self.crypto.randomUUID();
-            this.catchingService.createCatching(uuid, name?.value);
+            this.catchingService.createCatching(uuid, name?.value, null, null, false);
 
             console.log('create catching ' + uuid);
 

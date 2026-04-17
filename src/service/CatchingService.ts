@@ -1,17 +1,20 @@
 import { Repository } from '../storage/Repository';
+import { decimalToDegrees } from '../utils/calculator';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-import { decimalToDegrees } from '../utils/calculator';
 
 export class CatchingService {
     private repository = new Repository('catching');
     public map: any;
     public coords: any;
 
-    public createCatching = (id: string, name: string) => {
+    public createCatching = (id: string, name: string, latitude: number | null, longitude: number | null, isCatch: boolean) => {
         this.repository.create({
             id: id,
-            name: name
+            name: name,
+            latitude: latitude,
+            longitude: longitude,
+            isCatch: isCatch
         })
     }
 
@@ -25,6 +28,10 @@ export class CatchingService {
 
     public deleteCatching = (id: string) => {
         this.repository.delete(id);
+    }
+
+    public updateCatching(id: string, data: object) {
+        this.repository.update(id, data);
     }
 
     public getParams = (param: string) => {
