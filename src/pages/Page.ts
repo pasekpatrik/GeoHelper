@@ -13,6 +13,10 @@ export default class Page {
         this.element.addEventListener('click', (event) => {
             this.handleGlobalClicks(event);
         });
+
+        this.element.addEventListener('change', (event) => {
+            this.handleGlobalChange(event);
+        })
     }
 
     public render = () => {
@@ -33,4 +37,6 @@ export default class Page {
     public pageIsAvailable = () => {}
 
     protected handleGlobalClicks(_event: Event) {}
+
+    protected handleGlobalChange(_event: Event) {}
 }

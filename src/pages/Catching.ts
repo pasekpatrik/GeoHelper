@@ -6,10 +6,14 @@ import type { CatchingInterface } from '../types/CatchingInterface';
 
 export class Catching extends Page {
     private catchingService = new CatchingService();
-    private catching: CatchingInterface | null = this.catchingService.getCatching(this.catchingService.getParams('id') ?? '');
+    private catching: CatchingInterface | null = null;
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
+    }
+
+    private initCatching = () => {
+        this.catching = this.catchingService.getCatching(this.catchingService.getParams('id') ?? '')
     }
 
     protected override handleGlobalClicks(event: Event) {
@@ -31,30 +35,52 @@ export class Catching extends Page {
             }
 
             this.catchingService.updateCatching(this.catching?.id ?? '', updateCatching)
-
             this.catchingService.findPath(latitude, longitude, 'map');
         }
+
+        this.initCatching();
+    }
+
+    protected override handleGlobalChange(event: Event) {
+        const target = event.target as HTMLElement;
+
+        if (target.closest('#box-catch')) {
+            const updateCatching: CatchingInterface = {
+                id: this.catching?.id ?? '',
+                name: this.catching?.name ?? '',
+                latitude: this.catching?.latitude ?? 0,
+                longitude: this.catching?.longitude ?? 0,
+                isCatch: !this.catching?.isCatch
+            }
+
+            this.catchingService.updateCatching(this.catching?.id ?? '', updateCatching);
+        }
+
+        this.initCatching()
     }
 
     public pageIsAvailable = async () => {
         const coords = await this.catchingService.getGeoLocation();
 
-        if (this.catching?.latitude === null && this.catching.longitude === null) {
-            this.catchingService.startMap(coords.latitude, coords.longitude, 'map');
-        } else {
+        if (this.catching?.latitude !== null && this.catching?.longitude !== null) {
+            // TODO - vyřešit kde načítat souřednice 
             const latitude = this.catching?.latitude ?? 0
             const longitude = this.catching?.longitude ?? 0
 
             const latitudeInput = document.getElementById('input-latitude') as HTMLInputElement;
             const longitudeInput = document.getElementById('input-longitude') as HTMLInputElement;
-            latitudeInput.valueAsNumber = latitude;
-            longitudeInput.valueAsNumber = longitude;
+            latitudeInput.value = latitude.toString();
+            longitudeInput.value = longitude.toString();
             
             this.catchingService.findPath(latitude, longitude, 'map');
+        } else {
+            this.catchingService.startMap(coords.latitude, coords.longitude, 'map');
         }
     }
 
     override render = () => {
+        this.initCatching()
+
         return `
             <h1 class="text-5xl font-bold m-4">${this.catching?.name}</h1>
             <map-help></map-help>
@@ -63,37 +89,27 @@ export class Catching extends Page {
                 <div class="" data-theme="light">
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Latitude</legend>
-                        <input type="number" class="input" id="input-latitude" placeholder="Type here" />
+                        <input type="text" class="input" id="input-latitude" placeholder="Type here" />
                     </fieldset>
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Longitude</legend>
-                        <input type="number" class="input" id="input-longitude" placeholder="Type here" />
+                        <input type="text" class="input" id="input-longitude" placeholder="Type here" />
                     </fieldset>
                     <button class="btn" id="btn-submit">Submit</button>
                 </div>
 
-                <!--
                 <div class="ml-8 flex flex flex-col" data-theme="light">
                     <label>
                         Catch
-                        <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
-                    </label>
-                    <label>
-                        Catch
-                        <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
-                    </label>
-                    <label>
-                        Catch
-                        <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
-                    </label>
-                    <label>
-                        Catch
-                        <input type="checkbox" checked="checked" class="checkbox checkbox-accent" />
+                        <input 
+                            type="checkbox" 
+                            class="checkbox"
+                            id="box-catch"
+                            ${this.catching?.isCatch ? 'checked' : ''}
+                        />
                     </label>
                 </div>
-                -->
             </div>
-            
         `;
     }
 }

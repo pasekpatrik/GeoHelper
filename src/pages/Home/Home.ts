@@ -74,7 +74,9 @@ export class Home extends Page {
                                 </div>
                                 <div>
                                   <a href="/catching?id=${catching.id}">${catching.name}</a>
-                                  <div class="text-xs uppercase font-semibold opacity-60">Lorem ipsum</div>
+                                  <div class="text-xs uppercase font-semibold opacity-60">
+                                    ${catching.isCatch ? "Caught" : "Not found"}
+                                  </div>
                                 </div>
                                 <button class="btn btn-square btn-ghost" id="btn-delete">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Bin-1--Streamline-Ultimate" height="24" width="24">
