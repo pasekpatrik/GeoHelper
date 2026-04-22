@@ -84,7 +84,7 @@ export class Catching extends Page {
         return `
             <h1 class="text-5xl font-bold m-4">${this.catching?.name}</h1>
             <map-help></map-help>
-            <div class="flex ml-8 mt-4">
+            <section class="flex ml-8 mt-4">
 
                 <div class="" data-theme="light">
                     <fieldset class="fieldset">
@@ -109,7 +109,8 @@ export class Catching extends Page {
                         />
                     </label>
                 </div>
-            </div>
+                
+            </section>
         `;
     }
 }

@@ -131,6 +131,7 @@ export class Home extends Page {
                         class="input"
                         id="input-catching-name" 
                         placeholder="Type here"
+                        autofocus
                     />
                 </fieldset>
                 <div class="warning bg-orange-200 px-6 py-4 my-4 rounded-md text-sm">

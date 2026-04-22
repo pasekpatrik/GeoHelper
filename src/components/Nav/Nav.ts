@@ -15,7 +15,7 @@ export class Nav extends HTMLElement {
 
     public render = () => {
         this.innerHTML = `
-            <div class="navbar bg-base-100 shadow-smc default-nav" data-theme="dark">
+            <nav class="navbar bg-base-100 shadow-smc default-nav" data-theme="dark">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -34,7 +34,7 @@ export class Nav extends HTMLElement {
                 <div class="navbar-end">
                     <a class="btn btn-ghost text-xl" href="/">GeoHelper</a>
                 </div>
-            </div>  
+            </nav>  
         `;
     }
 }
