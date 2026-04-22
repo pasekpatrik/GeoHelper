@@ -1,4 +1,4 @@
-import styles from './Home.css?inline';
+import './Home.css';
 
 import Page from '../Page';
 import { Router } from '../../utils/Router';
@@ -58,7 +58,6 @@ export class Home extends Page {
 
     override render = () => {
         return `
-          <style>${styles}</style>
             <ul class="list bg-base-100 rounded-box shadow-md">
                 <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">${this.catchingService.getAllCatchings().length !== 0 ? 
                   "All catchings" 
@@ -70,7 +69,7 @@ export class Home extends Page {
                         return `
                             <li class="list-row" id="btn-catching" data-id="${catching.id}">
                                 <div>
-                                    <img class="size-10 rounded-box" src="earth1.png">
+                                    <img class="size-10 rounded-box" src="earth1.png" alt="earth">
                                 </div>
                                 <div>
                                   <a href="/catching?id=${catching.id}">${catching.name}</a>

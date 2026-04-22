@@ -1,4 +1,4 @@
-import styles from './Nav.css?inline';
+import'./Nav.css';
 
 export class Nav extends HTMLElement {
     constructor() {
@@ -15,7 +15,6 @@ export class Nav extends HTMLElement {
 
     public render = () => {
         this.innerHTML = `
-            <style>${styles}</style>
             <div class="navbar bg-base-100 shadow-smc default-nav" data-theme="dark">
                 <div class="navbar-start">
                     <div class="dropdown">

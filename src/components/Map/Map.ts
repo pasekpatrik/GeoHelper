@@ -1,4 +1,4 @@
-import styles from './Map.css?inline';
+import './Map.css';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
@@ -20,7 +20,6 @@ export class Map extends HTMLElement{
 
     public render = () => {
         this.innerHTML = `
-            <style>${styles}</style>
             <div id="map"></div>
         `
     }
