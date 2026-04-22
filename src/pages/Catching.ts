@@ -2,18 +2,30 @@ import { CatchingService } from '../service/CatchingService';
 import Page from './Page';
 // @ts-ignore
 import { Map } from '../components/Map/Map';
+import { Loader } from '../components/Loader/Loader';
+
 import type { CatchingInterface } from '../types/CatchingInterface';
 
 export class Catching extends Page {
     private catchingService = new CatchingService();
     private catching: CatchingInterface | null = null;
+    private loading: boolean = false;
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
     }
 
     private initCatching = () => {
-        this.catching = this.catchingService.getCatching(this.catchingService.getParams('id') ?? '')
+        this.catching = this.catchingService.getCatching(this.catchingService.getParams('id') ?? '');
+    }
+
+    private setLoading(value: boolean) {
+        this.loading = value;
+        const loader = this.element.querySelector('loader-spin');
+
+        if (loader) {
+            loader.setAttribute('data-active', String(value));
+        }
     }
 
     protected override handleGlobalClicks(event: Event) {
@@ -72,14 +84,17 @@ export class Catching extends Page {
             latitudeInput.value = latitude.toString();
             longitudeInput.value = longitude.toString();
             
-            this.catchingService.findPath(latitude, longitude, 'map');
+            await this.catchingService.findPath(latitude, longitude, 'map');
         } else {
             this.catchingService.startMap(coords.latitude, coords.longitude, 'map');
         }
+
+        this.setLoading(true);
     }
 
     override render = () => {
-        this.initCatching()
+        this.setLoading(false);
+        this.initCatching();
 
         return `
             <h1 class="text-5xl font-bold m-4">${this.catching?.name}</h1>
@@ -111,6 +126,10 @@ export class Catching extends Page {
                 </div>
                 
             </section>
+            <loader-spin
+                data-active=${this.loading}
+            >
+            </loader-spin>
         `;
     }
 }
