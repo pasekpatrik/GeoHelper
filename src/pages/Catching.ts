@@ -1,7 +1,9 @@
 import { CatchingService } from '../service/CatchingService';
 import Page from './Page';
+
 // @ts-ignore
 import { Map } from '../components/Map/Map';
+// @ts-ignore
 import { Loader } from '../components/Loader/Loader';
 
 import type { CatchingInterface } from '../types/CatchingInterface';

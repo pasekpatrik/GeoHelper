@@ -14,7 +14,7 @@ export class Loader extends HTMLElement {
         this.updateVisibility();
     }
 
-    attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    attributeChangedCallback(name: string, _oldValue: string, _newValue: string) {
         if (name === 'data-active') {
             this.updateVisibility();
         }
