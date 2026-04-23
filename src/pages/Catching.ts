@@ -1,17 +1,18 @@
 import { CatchingService } from '../service/CatchingService';
+import type { CatchingInterface } from '../types/CatchingInterface';
 import Page from './Page';
+import checkSound from '../assets/media/check.mp3';
 
 // @ts-ignore
 import { Map } from '../components/Map/Map';
 // @ts-ignore
 import { Loader } from '../components/Loader/Loader';
 
-import type { CatchingInterface } from '../types/CatchingInterface';
-
 export class Catching extends Page {
     private catchingService = new CatchingService();
     private catching: CatchingInterface | null = null;
     private loading: boolean = false;
+    private audio = new Audio(checkSound);
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
@@ -59,6 +60,8 @@ export class Catching extends Page {
         const target = event.target as HTMLElement;
 
         if (target.closest('#box-catch')) {
+            if (!this.catching?.isCatch) this.audio.play();
+
             const updateCatching: CatchingInterface = {
                 id: this.catching?.id ?? '',
                 name: this.catching?.name ?? '',
