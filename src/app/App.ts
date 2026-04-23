@@ -3,7 +3,7 @@ import { Nav } from "../components/Nav/Nav";
 import { Catching } from "../pages/Catching";
 import { Home } from "../pages/Home/Home";
 import { PageNotFound } from "../pages/PageNotFound";
-import { Settings } from "../pages/Settings";
+import { Settings } from "../pages/Settings/Settings";
 import { Statistics } from "../pages/Statistics";
 import { Router } from "../utils/Router";
 

@@ -1,4 +1,5 @@
-import Page from './Page';
+import './Settings.css';
+import Page from '../Page';
 
 export class Settings extends Page {
 
@@ -8,7 +9,8 @@ export class Settings extends Page {
 
     override render = () => {
         return `
-            <div>Settings</div>
+            <input id="custom-checkbox-input" type="checkbox">
+	        <label id="custom-checkbox" for="custom-checkbox-input"></label>
         `;
     }
 }

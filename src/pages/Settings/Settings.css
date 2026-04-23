@@ -1,0 +1,32 @@
+#custom-checkbox-input {
+    display: none;
+}
+
+#custom-checkbox-input:checked + #custom-checkbox::before {
+    left: 100%;
+    transform: translateX(-100%);
+    background-color: green;
+}
+
+#custom-checkbox {
+    background-color: aquamarine;
+    width: 60px;
+    height: 30px;
+    display: block;
+    border-radius: 30px;
+    cursor: pointer;
+    position: relative;
+
+    &::before {
+        content: "";
+        display: block;
+        width: 30px;
+        height: 30px;
+        background-color: red;
+        position: absolute;
+        left: 0;
+        border-radius: 50%;
+
+        transition: all .3s;
+    }
+}
