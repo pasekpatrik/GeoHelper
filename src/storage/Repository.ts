@@ -22,10 +22,17 @@ export class Repository extends AbstractRepository {
         return this.findAll().find(item => item.id === id);
     }
 
-    public override update = (id: string, data: object) => {
-        this.delete(id);
-        this.create(data);
-    };
+    public override update = (id: string, newData: object) => {
+        const data = this.findAll()
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].id === id) {
+                data[i] = newData
+            }
+        }
+       
+        this.storage.setItems(this.key, data);
+    }
 
     public override delete = (id: string) => {
         const data = this.findAll();

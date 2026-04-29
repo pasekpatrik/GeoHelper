@@ -6,9 +6,11 @@ import { PageNotFound } from "../pages/PageNotFound";
 import { Settings } from "../pages/Settings/Settings";
 import { Statistics } from "../pages/Statistics";
 import { Router } from "../utils/Router";
+import { SettingsService } from '../service/SettingsService';
 
 export default class App {
     private static instance: App | null = null;
+    private settingsService = new SettingsService();
 
     private constructor () {}
 
@@ -36,5 +38,8 @@ export default class App {
         );
         
         root.append(navBar, content);
+
+        const settings = this.settingsService.getSettings();
+        if (settings.length === 0) this.settingsService.createSettings('1', true);
     }
 }

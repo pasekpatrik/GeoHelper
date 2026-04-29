@@ -7,12 +7,15 @@ import checkSound from '../assets/media/check.mp3';
 import { Map } from '../components/Map/Map';
 // @ts-ignore
 import { Loader } from '../components/Loader/Loader';
+import { SettingsService } from '../service/SettingsService';
 
 export class Catching extends Page {
     private catchingService = new CatchingService();
+    private settingsService = new SettingsService();
+
     private catching: CatchingInterface | null = null;
     private loading: boolean = false;
-    private audio = new Audio(checkSound);
+    private audio: any;
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
@@ -60,7 +63,7 @@ export class Catching extends Page {
         const target = event.target as HTMLElement;
 
         if (target.closest('#box-catch')) {
-            if (!this.catching?.isCatch) this.audio.play();
+            if (!this.catching?.isCatch ) this.audio.play();
 
             const updateCatching: CatchingInterface = {
                 id: this.catching?.id ?? '',
@@ -77,6 +80,8 @@ export class Catching extends Page {
     }
 
     public pageIsAvailable = async () => {
+        this.audio = this.settingsService.getSettings().isAudioOn ? new Audio(checkSound) : null;
+
         const coords = await this.catchingService.getGeoLocation();
 
         if (this.catching?.latitude !== null && this.catching?.longitude !== null) {
@@ -102,8 +107,9 @@ export class Catching extends Page {
         this.initCatching();
 
         return `
-            <h1 class="text-5xl font-bold m-4">${this.catching?.name}</h1>
+            <h2 class="text-5xl font-bold m-4">${this.catching?.name}</h2>
             <map-help></map-help>
+
             <section class="flex ml-8 mt-4">
 
                 <div class="" data-theme="light">
@@ -131,6 +137,7 @@ export class Catching extends Page {
                 </div>
                 
             </section>
+
             <loader-spin
                 data-active=${this.loading}
             >

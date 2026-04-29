@@ -15,8 +15,9 @@ export class Home extends Page {
 
     protected override handleGlobalClicks(event: Event) {
         const target = event.target as HTMLElement;
-         // @ts-ignore
-         const id: string = target.closest('#btn-catching')?.dataset.id ?? '';
+		
+		const catching = target.closest('.btn-catching') as HTMLElement;
+        const id: string = catching?.dataset.id ?? '';
     
         if (target.closest('#btn-earth')) {
             const modal = this.element.querySelector('#my_modal_1') as HTMLDialogElement;
@@ -26,9 +27,9 @@ export class Home extends Page {
     
         if (target.closest('#btn-create')) {
             event.preventDefault();
-
             const name = document.getElementById('input-catching-name') as HTMLInputElement;
 
+			// Validation
             if (!name.value || name.value.length > 16) {
                 document.querySelector('.warning')?.classList.add('show');
                 return;
@@ -44,13 +45,13 @@ export class Home extends Page {
         }
 
         if (target.closest('#btn-delete')) {
-         this.catchingService.deleteCatching(id);
+         	this.catchingService.deleteCatching(id);
 
-         this.router.navigate(window.location.origin);
-         return;
-       }
+         	this.router.navigate(window.location.origin);
+         	return;
+       	}
 
-        if (target.closest('#btn-catching')) {
+        if (target.closest('.btn-catching')) {
           this.router.navigate(window.location.origin + `/catching?id=${id}`);
           return;
         }
@@ -67,12 +68,12 @@ export class Home extends Page {
                 ${
                     this.catchingService.getAllCatchings().map((catching: CatchingInterface) => {
                         return `
-                            <li class="list-row" id="btn-catching" data-id="${catching.id}">
+                            <li class="list-row btn-catching" data-id="${catching.id}">
                                 <div>
                                     <img class="size-10 rounded-box" src="earth1.png" alt="earth">
                                 </div>
                                 <div>
-                                  <a href="/catching?id=${catching.id}">${catching.name}</a>
+                                  <h3>${catching.name}</h3>
                                   <div class="text-xs uppercase font-semibold opacity-60">
                                     ${catching.isCatch ? "Caught" : "Not found"}
                                   </div>
@@ -131,7 +132,6 @@ export class Home extends Page {
                         class="input"
                         id="input-catching-name" 
                         placeholder="Type here"
-                        autofocus
                     />
                 </fieldset>
                 <div class="warning bg-orange-200 px-6 py-4 my-4 rounded-md text-sm">
@@ -144,7 +144,6 @@ export class Home extends Page {
                     </div>
                 <div class="modal-action">
                   <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
                     <button class="btn" id="btn-create">Create</button>
                     <button class="btn">Close</button>
                   </form>
