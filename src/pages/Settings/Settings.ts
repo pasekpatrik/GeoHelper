@@ -34,12 +34,19 @@ export class Settings extends Page {
         this.initSettings();
 
         return `
-            <input 
-                id="custom-checkbox-input" 
-                type="checkbox"
-                ${this.settings?.isAudioOn ? 'checked' : ''}
-                >
-	        <label id="custom-checkbox" for="custom-checkbox-input"></label>
+            <section class="ps-4 py-4">
+
+                <div class="flex items-center gap-2">
+                    Audio: 
+                    <input
+                        id="custom-checkbox-input" 
+                        type="checkbox"
+                        ${this.settings?.isAudioOn ? 'checked' : ''}
+                    >
+	                <label id="custom-checkbox" for="custom-checkbox-input"></label>
+                </div>
+                
+            </section>
         `;
     }
 }

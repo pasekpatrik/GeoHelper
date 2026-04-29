@@ -98,7 +98,7 @@ export class Home extends Page {
                     }).join('')
                 }
             </ul>
-            <div class="fab">
+            <div class="fab" >
                 <div tabindex="0" role="button" class="btn btn-lg btn-circle" data-theme="dark">
                   <svg
                     aria-label="New"
@@ -116,14 +116,13 @@ export class Home extends Page {
                 <button 
                     class="btn btn-lg btn-circle" 
                     id="btn-earth" 
-                    data-theme="light"
                 >
                     🌍
                 </button>
             </div>
 
             <dialog id="my_modal_1" class="modal">
-              <div class="modal-box" data-theme="light">
+              <div class="modal-box">
                 <h3 class="text-lg font-bold">Create catching!</h3>
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">Name</legend>

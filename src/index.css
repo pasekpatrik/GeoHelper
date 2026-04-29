@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: "dark", "light";
+  themes: light, dark;
 }
 
 * {
@@ -14,5 +14,5 @@
 }
 
 button svg {
-  pointer-events: none;
+    pointer-events: none;
 }

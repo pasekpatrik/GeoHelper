@@ -15,7 +15,7 @@ export class Nav extends HTMLElement {
 
     public render = () => {
         this.innerHTML = `
-            <nav class="navbar bg-base-100 shadow-smc default-nav" data-theme="dark">
+            <nav class="navbar shadow-smc default-nav" data-theme="dark">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
