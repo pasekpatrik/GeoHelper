@@ -124,8 +124,10 @@ export class Home extends Page {
             </div>
 
             <dialog id="my_modal_1" class="modal">
+
               <div class="modal-box">
                 <h3 class="text-lg font-bold">Create catching!</h3>
+                
                 <fieldset class="fieldset">
                     <legend class="fieldset-legend">Name</legend>
                     <input 
@@ -135,6 +137,7 @@ export class Home extends Page {
                         placeholder="Type here"
                     />
                 </fieldset>
+
                 <div class="warning bg-orange-200 px-6 py-4 my-4 rounded-md text-sm">
                       <svg viewBox="0 0 24 24" class="text-yellow-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
                         <path fill="currentColor"
@@ -142,14 +145,17 @@ export class Home extends Page {
                         </path>
                       </svg>
                       <span class="text-yellow-800">Name must be between 1 and 16 characters long.</span>
-                    </div>
+                </div>
+
                 <div class="modal-action">
                   <form method="dialog">
                     <button class="btn" id="btn-create">Create</button>
                     <button class="btn">Close</button>
                   </form>
                 </div>
+
               </div>
+
             </dialog>
         `;
     }
