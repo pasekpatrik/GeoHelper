@@ -37,3 +37,22 @@
     background-color: var(--color-success-content); 
     filter: brightness(1.2);
 }
+
+#sound {
+    width: 32px;
+    stroke: var(--color-error);
+    transition: all 0.3s ease;
+}
+
+#cross-line {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#custom-checkbox-input:checked ~ #sound {
+    stroke: var(--color-success);
+}
+
+#custom-checkbox-input:checked ~ #sound #cross-line {
+    opacity: 0;
+}
