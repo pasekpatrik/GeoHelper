@@ -51,6 +51,8 @@ export class CatchingService {
     }
 
     public initMap = (idElement: string) => {
+        console.log('Start - init map');
+
         if (this.map) {
             this.map.remove();
         }
@@ -65,17 +67,25 @@ export class CatchingService {
         this.map.on('click' , () => {
             document.getElementById(idElement)?.requestFullscreen();
         })
+
+        console.log('End - init map');
     }
 
     public startMap = (latitude: number, longitude: number, idElement: string) => {
+        console.log('Start - start map');
+
         this.initMap(idElement);
 
-        this.map.setView([latitude, longitude], 13);
+        this.map.setView([latitude, longitude], 16);
 
-        L.marker([latitude, longitude]).addTo(this.map)
+        L.marker([latitude, longitude]).addTo(this.map);
+
+        console.log('End - start map');
     }
 
     public findPath = async (latitude: number, longitude: number, idElement: string) => {
+        console.log('Start - findPath');
+
         this.initMap(idElement);
         
         this.coords = await this.getGeoLocation();
@@ -103,6 +113,8 @@ export class CatchingService {
             fillOpacity: 0.5,
             radius: 30
         }).addTo(this.map);
+
+        console.log('End - findPath');
     } 
 
     public getGeoLocation = (): Promise<{ latitude: number, longitude: number }> => {

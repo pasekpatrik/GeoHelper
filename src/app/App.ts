@@ -1,18 +1,20 @@
+// Pages
+import { Home } from '../pages/Home/Home';
+import { Catching } from '../pages/Catching';
+import { Settings } from '../pages/Settings/Settings';
+import { Statistics } from '../pages/Statistics';
+import { PageNotFound } from '../pages/PageNotFound';
+
 // @ts-ignore
-import { Nav } from "../components/Nav/Nav";
-import { Catching } from "../pages/Catching";
-import { Home } from "../pages/Home/Home";
-import { PageNotFound } from "../pages/PageNotFound";
-import { Settings } from "../pages/Settings/Settings";
-import { Statistics } from "../pages/Statistics";
-import { Router } from "../utils/Router";
+import { Nav } from '../components/Nav/Nav';
+import { Router } from '../utils/Router';
 import { SettingsService } from '../service/SettingsService';
 
 export default class App {
     private static instance: App | null = null;
     private settingsService = new SettingsService();
 
-    private constructor () {}
+    private constructor () {};
 
     public static getInstance() {
         if (this.instance === null) {
@@ -24,10 +26,11 @@ export default class App {
 
     public run = (root: HTMLElement) => {
         const navBar = document.createElement('nav-bar');
-        const content = document.createElement('div');
+        const content = document.createElement('main');
         content.classList.add('container');
 
         const router: Router = Router.getInstance();
+
         router.init([
             new Home('/', 'Home', content), 
             new Statistics('/statistics', 'Statistics', content),
@@ -39,7 +42,6 @@ export default class App {
         
         root.append(navBar, content);
 
-        const settings = this.settingsService.getSettings();
-        if (settings.length === 0) this.settingsService.createSettings('1', true);
+        if (this.settingsService.getSettings().length === 0) this.settingsService.createSettings('1', true);
     }
 }

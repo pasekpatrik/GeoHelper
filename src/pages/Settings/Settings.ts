@@ -1,11 +1,12 @@
 import './Settings.css';
+
 import Page from '../Page';
 import { SettingsService } from '../../service/SettingsService';
 import type { SettingsInterface } from '../../types/SettingsInterface';
 
 export class Settings extends Page {
     private settinsService = new SettingsService();
-    private settings: SettingsInterface | undefined;
+    private settings: SettingsInterface | null = null;
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
@@ -15,7 +16,7 @@ export class Settings extends Page {
         this.settings = this.settinsService.getSettings();
     }
 
-    protected override handleGlobalChange(event: Event): void {
+    protected override handleGlobalChange(event: Event) {
         const target = event.target as HTMLElement;
 
         if (target.closest('#custom-checkbox-input')) {

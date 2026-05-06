@@ -1,13 +1,13 @@
-import { CatchingService } from '../service/CatchingService';
-import type { CatchingInterface } from '../types/CatchingInterface';
 import Page from './Page';
-import checkSound from '../assets/media/check.mp3';
-
 // @ts-ignore
 import { Map } from '../components/Map/Map';
 // @ts-ignore
 import { Loader } from '../components/Loader/Loader';
+import { CatchingService } from '../service/CatchingService';
+import type { CatchingInterface } from '../types/CatchingInterface';
 import { SettingsService } from '../service/SettingsService';
+
+import checkSound from '../assets/media/check.mp3';
 
 export class Catching extends Page {
     private catchingService = new CatchingService();
@@ -15,7 +15,7 @@ export class Catching extends Page {
 
     private catching: CatchingInterface | null = null;
     private loading: boolean = false;
-    private audio: any;
+    private audio: HTMLAudioElement | null = null;
 
     constructor(key: string, title: string, element: HTMLElement) {
         super(key, title, element)
@@ -34,12 +34,12 @@ export class Catching extends Page {
         }
     }
 
-    protected override handleGlobalClicks(event: Event) {
+    protected override async handleGlobalClicks(event: Event) {
         const target = event.target as HTMLElement;
     
         if (target.closest('#btn-submit')) {
-            const latitudeInput = document.getElementById('input-latitude') as HTMLInputElement;
-            const longitudeInput = document.getElementById('input-longitude') as HTMLInputElement;
+            const latitudeInput = this.element.querySelector('#input-latitude') as HTMLInputElement;
+            const longitudeInput = this.element.querySelector('#input-longitude') as HTMLInputElement;
 
             const latitude = this.catchingService.convertInputToDegree(latitudeInput)
             const longitude = this.catchingService.convertInputToDegree(longitudeInput)
@@ -53,7 +53,7 @@ export class Catching extends Page {
             }
 
             this.catchingService.updateCatching(this.catching?.id ?? '', updateCatching)
-            this.catchingService.findPath(latitude, longitude, 'map');
+            await this.catchingService.findPath(latitude, longitude, 'map');
         }
 
         this.initCatching();
@@ -63,7 +63,7 @@ export class Catching extends Page {
         const target = event.target as HTMLElement;
 
         if (target.closest('#box-catch')) {
-            if (!this.catching?.isCatch ) this.audio.play();
+            if (!this.catching?.isCatch ) this.audio?.play();
 
             const updateCatching: CatchingInterface = {
                 id: this.catching?.id ?? '',
@@ -89,8 +89,8 @@ export class Catching extends Page {
             const latitude = this.catching?.latitude ?? 0
             const longitude = this.catching?.longitude ?? 0
 
-            const latitudeInput = document.getElementById('input-latitude') as HTMLInputElement;
-            const longitudeInput = document.getElementById('input-longitude') as HTMLInputElement;
+            const latitudeInput = this.element.querySelector('#input-latitude') as HTMLInputElement;
+            const longitudeInput = this.element.querySelector('#input-longitude') as HTMLInputElement;
             latitudeInput.value = latitude.toString();
             longitudeInput.value = longitude.toString();
             

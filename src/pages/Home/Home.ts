@@ -3,7 +3,7 @@ import './Home.css';
 import Page from '../Page';
 import { Router } from '../../utils/Router';
 import { CatchingService } from '../../service/CatchingService';
-import { type CatchingInterface } from "../../types/CatchingInterface";
+import { type CatchingInterface } from '../../types/CatchingInterface';
 
 export class Home extends Page {
     private catchingService = new CatchingService();
@@ -15,28 +15,29 @@ export class Home extends Page {
 
     protected override handleGlobalClicks(event: Event) {
         const target = event.target as HTMLElement;
-		
-		const catching = target.closest('.btn-catching') as HTMLElement;
+
+        const catching = target.closest('.btn-catching') as HTMLElement;
         const id: string = catching?.dataset.id ?? '';
-    
+
         if (target.closest('#btn-earth')) {
-            const modal = this.element.querySelector('#my_modal_1') as HTMLDialogElement;
-            modal?.showModal();
+            const modal = this.element.querySelector('#modal-create') as HTMLDialogElement;
+            modal.showModal();
+
             return;
         }
-    
+
         if (target.closest('#btn-create')) {
             event.preventDefault();
-            const name = document.getElementById('input-catching-name') as HTMLInputElement;
+            const name = this.element.querySelector('#input-catching-name') as HTMLInputElement;
 
-			// Validation
+            // Validation
             if (!name.value || name.value.length > 16) {
-                document.querySelector('.warning')?.classList.add('show');
+                this.element.querySelector('.warning')?.classList.add('show');
                 return;
             }
 
             const uuid = self.crypto.randomUUID();
-            this.catchingService.createCatching(uuid, name?.value, null, null, false);
+            this.catchingService.createCatching(uuid, name.value, null, null, false);
 
             console.log('create catching ' + uuid);
 
@@ -45,29 +46,30 @@ export class Home extends Page {
         }
 
         if (target.closest('#btn-delete')) {
-         	this.catchingService.deleteCatching(id);
+            this.catchingService.deleteCatching(id);
 
-         	this.router.navigate(window.location.origin);
-         	return;
-       	}
+            this.router.navigate(window.location.origin);
+            return;
+        }
 
         if (target.closest('.btn-catching')) {
-          this.router.navigate(window.location.origin + `/catching?id=${id}`);
-          return;
+            this.router.navigate(window.location.origin + `/catching?id=${id}`);
+            return;
         }
     }
 
     override render = () => {
+        const catchings: CatchingInterface[] = this.catchingService.getAllCatchings();
+
         return `
             <ul class="list bg-base-100 rounded-box shadow-md">
-                <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">${this.catchingService.getAllCatchings().length !== 0 ? 
-                  "All catchings" 
-                  : "There is nothing!" 
-                }
+                <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">${catchings.length !== 0 ?
+                "All catchings"
+                : "There is nothing!"
+            }
                   </li>
-                ${
-                    this.catchingService.getAllCatchings().map((catching: CatchingInterface) => {
-                        return `
+                ${catchings.map((catching: CatchingInterface) => {
+                return `
                             <li class="list-row btn-catching" data-id="${catching.id}">
                                 
                                 <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10" stroke="#000000" stroke-width="1.5"></circle> <path d="M6 4.71053C6.78024 5.42105 8.38755 7.36316 8.57481 9.44737C8.74984 11.3955 10.0357 12.9786 12 13C12.7549 13.0082 13.5183 12.4629 13.5164 11.708C13.5158 11.4745 13.4773 11.2358 13.417 11.0163C13.3331 10.7108 13.3257 10.3595 13.5 10C14.1099 8.74254 15.3094 8.40477 16.2599 7.72186C16.6814 7.41898 17.0659 7.09947 17.2355 6.84211C17.7037 6.13158 18.1718 4.71053 17.9377 4" stroke="#000000" stroke-width="1.5"></path> <path d="M22 13C21.6706 13.931 21.4375 16.375 17.7182 16.4138C17.7182 16.4138 14.4246 16.4138 13.4365 18.2759C12.646 19.7655 13.1071 21.3793 13.4365 22" stroke="#000000" stroke-width="1.5"></path> </g></svg>
@@ -97,8 +99,8 @@ export class Home extends Page {
                                 </button> -->
                             </li>
                         `
-                    }).join('')
-                }
+            }).join('')
+            }
             </ul>
             <div class="fab" >
                 <div tabindex="0" role="button" class="btn btn-lg btn-circle" data-theme="dark">
@@ -123,7 +125,7 @@ export class Home extends Page {
                 </button>
             </div>
 
-            <dialog id="my_modal_1" class="modal">
+            <dialog id="modal-create" class="modal">
 
               <div class="modal-box">
                 <h3 class="text-lg font-bold">Create catching!</h3>
