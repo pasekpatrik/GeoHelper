@@ -110,9 +110,9 @@ export class Catching extends Page {
             <h2 class="text-5xl font-bold m-4">${this.catching?.name}</h2>
             <map-help></map-help>
 
-            <section class="flex ml-8 mt-4">
+            <section class="flex flex-col ml-8 mt-4 md:flex-row">
 
-                <div class="">
+                <div>
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Latitude</legend>
                         <input type="text" class="input" id="input-latitude" placeholder="Type here" />
@@ -124,7 +124,7 @@ export class Catching extends Page {
                     <button class="btn" id="btn-submit">Submit</button>
                 </div>
 
-                <div class="ml-8 flex flex flex-col">
+                <div class="flex flex-col mt-4 md:ml-8">
                     <label>
                         Catch
                         <input 
