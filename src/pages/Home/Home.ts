@@ -2,7 +2,7 @@ import './Home.css';
 
 import Page from '../Page';
 import { Router } from '../../utils/Router';
-import { CatchingService } from '../../service/CatchingService';
+import { CatchingService } from '../../domain/CatchingService';
 import { type CatchingInterface } from '../../types/CatchingInterface';
 
 export class Home extends Page {

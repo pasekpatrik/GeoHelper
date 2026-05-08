@@ -24,17 +24,23 @@ export default class Page {
     }
 
     public showPage = () => {
+        this.pageBeforeRendering();
+
         this.element.innerHTML = this.render();
         document.title = this.title;
-        
-        this.pageIsAvailable();
+
+        requestAnimationFrame(() => {
+            this.pageIsAvailable();
+        });
     }
 
     // When is page is created (Constructor)
     public pageIsCreated(){}
     
-    // When is page render
+    // When is page rendered
     public pageIsAvailable = () => {}
+
+    public pageBeforeRendering = () => {}
 
     protected handleGlobalClicks(_event: Event) {}
 

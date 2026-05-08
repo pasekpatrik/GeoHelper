@@ -1,54 +1,10 @@
-import { Repository } from '../storage/Repository';
-import { decimalToDegrees } from '../utils/calculator';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 
-export class CatchingService {
-    private repository = new Repository('catching');
-    public map: any;
-    public coords: any;
-
-    public createCatching = (id: string, name: string, latitude: number | null, longitude: number | null, isCatch: boolean) => {
-        this.repository.create({
-            id: id,
-            name: name,
-            latitude: latitude,
-            longitude: longitude,
-            isCatch: isCatch
-        })
-    }
-
-    public getCatching = (id: string) => {
-        return this.repository.find(id);
-    }
-
-    public getAllCatchings = () => {
-        return this.repository.findAll();
-    }
-
-    public deleteCatching = (id: string) => {
-        this.repository.delete(id);
-    }
-
-    public updateCatching(id: string, data: object) {
-        this.repository.update(id, data);
-    }
-
-    public getParams = (param: string) => {
-        let params = new URLSearchParams(document.location.search);
-        return params.get(param); 
-    }
-
-    public convertInputToDegree = (input: HTMLInputElement) => {
-        let newInput = input.value.split(" ")
-        let coordinates = []
-
-        for (let coor of newInput) {
-            coordinates.push(Number(coor))
-        }
-
-        return decimalToDegrees(coordinates[0] ?? 0, coordinates[1] ?? 0, coordinates[2] ?? 0)
-    }
+export class MapService {
+    private map: any;
+    private pathLayer: any;
+    private routingControl: any = null;
 
     public initMap = (idElement: string) => {
         console.log('Start - init map');
@@ -68,31 +24,37 @@ export class CatchingService {
             document.getElementById(idElement)?.requestFullscreen();
         })
 
+        this.pathLayer = L.layerGroup().addTo(this.map);
+
         console.log('End - init map');
     }
 
-    public startMap = (latitude: number, longitude: number, idElement: string) => {
+    public startMap = async () => {
         console.log('Start - start map');
 
-        this.initMap(idElement);
+        const coords = await this.getGeoLocation();
 
-        this.map.setView([latitude, longitude], 16);
+        this.map?.setView([coords.latitude, coords.longitude], 16);
 
-        L.marker([latitude, longitude]).addTo(this.map);
+        L.marker([coords.latitude, coords.longitude]).addTo(this.map);
 
         console.log('End - start map');
     }
 
-    public findPath = async (latitude: number, longitude: number, idElement: string) => {
+    public findPath = async (latitude: number, longitude: number) => {
         console.log('Start - findPath');
 
-        this.initMap(idElement);
-        
-        this.coords = await this.getGeoLocation();
+        this.pathLayer?.clearLayers();
+        const coords = await this.getGeoLocation();
 
-        L.Routing.control({
+        if (this.routingControl) {
+            this.map?.removeControl(this.routingControl);
+            this.routingControl = null;
+        }
+
+        this.routingControl = L.Routing.control({
             waypoints: [
-              L.latLng(this.coords.latitude, this.coords.longitude),
+              L.latLng(coords.latitude, coords.longitude),
               L.latLng(latitude, longitude)
             ],
             router: (L as any).Routing.osrmv1({
@@ -119,6 +81,8 @@ export class CatchingService {
 
     public getGeoLocation = (): Promise<{ latitude: number, longitude: number }> => {
         return new Promise((resolve, reject) => {
+            console.log('Start - getGeoLocation');
+
             if (!navigator.geolocation) {
                 console.warn('Warn: geolocation is not supported!');
                 reject('Geolocation not supported');
@@ -137,6 +101,8 @@ export class CatchingService {
                     reject(error);
                 }
             );
+
+            console.log('End - getGeoLocation');
         });
     }
 }

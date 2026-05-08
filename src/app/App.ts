@@ -8,7 +8,7 @@ import { PageNotFound } from '../pages/PageNotFound';
 // @ts-ignore
 import { Nav } from '../components/Nav/Nav';
 import { Router } from '../utils/Router';
-import { SettingsService } from '../service/SettingsService';
+import { SettingsService } from '../domain/SettingsService';
 
 export default class App {
     private static instance: App | null = null;

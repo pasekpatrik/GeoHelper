@@ -1,7 +1,7 @@
 import './Settings.css';
 
 import Page from '../Page';
-import { SettingsService } from '../../service/SettingsService';
+import { SettingsService } from '../../domain/SettingsService';
 import type { SettingsInterface } from '../../types/SettingsInterface';
 
 export class Settings extends Page {
