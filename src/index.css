@@ -16,3 +16,11 @@
 button svg {
     pointer-events: none;
 }
+
+.warning {
+  display: none;
+}
+
+.warning.show {
+  display: flex;
+}

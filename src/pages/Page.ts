@@ -17,6 +17,10 @@ export default class Page {
         this.element.addEventListener('change', (event) => {
             this.handleGlobalChange(event);
         })
+
+        this.element.addEventListener('submit', (event) => {
+            this.handleGlobalSubmit(event);
+        })
     }
 
     public render = () => {
@@ -40,9 +44,12 @@ export default class Page {
     // When is page rendered
     public pageIsAvailable = () => {}
 
+    // Before render
     public pageBeforeRendering = () => {}
 
     protected handleGlobalClicks(_event: Event) {}
 
     protected handleGlobalChange(_event: Event) {}
+
+    protected handleGlobalSubmit(_event: Event) {}
 }

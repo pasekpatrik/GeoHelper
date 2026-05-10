@@ -26,12 +26,21 @@ export class Home extends Page {
             return;
         }
 
+        if (target.closest('#btn-close')) {
+            const modal = this.element.querySelector('#modal-create') as HTMLDialogElement;
+            modal.close();
+
+            return;
+        }
+
         if (target.closest('#btn-create')) {
             event.preventDefault();
+
+            const textRegex = /^[A-Za-zÁ-ž ]+$/;
             const name = this.element.querySelector('#input-catching-name') as HTMLInputElement;
 
             // Validation
-            if (!name.value || name.value.length > 16) {
+            if (!name.value || name.value.length > 16 || !textRegex.test(name.value)) {
                 this.element.querySelector('.warning')?.classList.add('show');
                 return;
             }
@@ -137,6 +146,7 @@ export class Home extends Page {
                         class="input"
                         id="input-catching-name" 
                         placeholder="Type here"
+                        pattern="[A-Za-zÁ-ž ]+"
                     />
                 </fieldset>
 
@@ -146,13 +156,13 @@ export class Home extends Page {
                             d="M23.119,20,13.772,2.15h0a2,2,0,0,0-3.543,0L.881,20a2,2,0,0,0,1.772,2.928H21.347A2,2,0,0,0,23.119,20ZM11,8.423a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Zm1.05,11.51h-.028a1.528,1.528,0,0,1-1.522-1.47,1.476,1.476,0,0,1,1.448-1.53h.028A1.527,1.527,0,0,1,13.5,18.4,1.475,1.475,0,0,1,12.05,19.933Z">
                         </path>
                       </svg>
-                      <span class="text-yellow-800">Name must be between 1 and 16 characters long.</span>
+                      <span class="text-yellow-800">Invalid name. Please use only letters (1–16 characters long).</span>
                 </div>
 
                 <div class="modal-action">
-                  <form method="dialog">
-                    <button class="btn" id="btn-create">Create</button>
-                    <button class="btn">Close</button>
+                  <form method="dialog" class="w-full flex justify-between">
+                    <button class="btn text-white bg-[var(--color-error)]" id="btn-close">Close</button>
+                    <button class="btn text-white bg-[var(--color-success)]" id="btn-create">Create</button>
                   </form>
                 </div>
 
