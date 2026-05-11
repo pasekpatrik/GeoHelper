@@ -32,17 +32,23 @@ export class CatchingService {
 
     public getParams = (param: string) => {
         let params = new URLSearchParams(document.location.search);
-        return params.get(param); 
+        return params.get(param);
     }
 
     public convertInputToDegree = (input: HTMLInputElement) => {
-        let newInput = input.value.split(" ")
-        let coordinates = []
+        const rawValue = input.value.trim();
 
-        for (let coor of newInput) {
-            coordinates.push(Number(coor))
+        const matches = rawValue.match(/\d+(\.\d+)?/g);
+
+        if (!matches) {
+            return 0;
         }
+        const coordinates = matches.map(num => Number(num));
 
-        return decimalToDegrees(coordinates[0] ?? 0, coordinates[1] ?? 0, coordinates[2] ?? 0)
+        return decimalToDegrees(
+            coordinates[0] ?? 0,
+            coordinates[1] ?? 0,
+            coordinates[2] ?? 0
+        );
     }
 }

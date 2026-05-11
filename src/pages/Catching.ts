@@ -77,6 +77,8 @@ export class Catching extends Page {
                 return; 
             }
 
+            this.element.querySelector('.warning')?.classList.remove('show');
+
             const latitude = this.catchingService.convertInputToDegree(latitudeInput);
             const longitude = this.catchingService.convertInputToDegree(longitudeInput);
 
@@ -99,12 +101,12 @@ export class Catching extends Page {
         this.setLoading(false);
         this.initCatching();
         
-
         this.audio = this.settingsService.getSettings().isAudioOn ? new Audio(checkSound) : null;
     }
 
-    public pageIsAvailable = () => {
+    public pageIsAvailable = async () => {
         this.mapService.initMap('map');
+        let loading = false;
 
         if (this.catching?.latitude !== null && this.catching?.longitude !== null) {
             const latitude = this.catching?.latitude ?? 0
@@ -115,12 +117,12 @@ export class Catching extends Page {
             latitudeInput.value = latitude.toString();
             longitudeInput.value = longitude.toString();
 
-            this.mapService.findPath(latitude, longitude);
+            loading = await this.mapService.findPath(latitude, longitude);
         } else {
-            this.mapService.startMap();
+            loading = await this.mapService.startMap();
         }
 
-        this.setLoading(true);
+        this.setLoading(loading);
     }
 
     override render = () => {
@@ -131,7 +133,7 @@ export class Catching extends Page {
             <section class="flex flex-col ml-8 mt-4 mb-8 md:flex-row">
 
                 <div>
-                    <form id="form-lat-log">
+                    <form class="w-xs flex flex-col" id="form-lat-log">
                         <fieldset class="fieldset">
                             <legend class="fieldset-legend">Latitude</legend>
                             <input 
@@ -142,6 +144,7 @@ export class Catching extends Page {
                                 required
                             />
                         </fieldset>
+
                         <fieldset class="fieldset">
                             <legend class="fieldset-legend">Longitude</legend>
                             <input 
@@ -171,15 +174,18 @@ export class Catching extends Page {
                 </div>
 
                 <div class="flex flex-col mt-4 md:ml-8">
-                    <label>
-                        Catch
-                        <input 
-                            type="checkbox" 
-                            class="checkbox"
-                            id="box-catch"
-                            ${this.catching?.isCatch ? 'checked' : ''}
-                        />
-                    </label>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend">Catching</legend>
+                        <label>
+                            Catch
+                            <input 
+                                type="checkbox" 
+                                class="checkbox"
+                                id="box-catch"
+                                ${this.catching?.isCatch ? 'checked' : ''}
+                            />
+                        </label>
+                    </fieldset>
                 </div>
                 
             </section>

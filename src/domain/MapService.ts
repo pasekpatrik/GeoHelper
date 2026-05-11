@@ -16,11 +16,11 @@ export class MapService {
         this.map = L.map(idElement).fitWorld();
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		    maxZoom: 19,
-		    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	    }).addTo(this.map);
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(this.map);
 
-        this.map.on('click' , () => {
+        this.map.on('click', () => {
             document.getElementById(idElement)?.requestFullscreen();
         })
 
@@ -29,55 +29,75 @@ export class MapService {
         console.log('End - init map');
     }
 
-    public startMap = async () => {
+    public startMap = async (): Promise<boolean> => {
         console.log('Start - start map');
 
-        const coords = await this.getGeoLocation();
+        let result = true;
 
-        this.map?.setView([coords.latitude, coords.longitude], 16);
+        try {
+            const coords = await this.getGeoLocation();
 
-        L.marker([coords.latitude, coords.longitude]).addTo(this.map);
+            this.map?.setView([coords.latitude, coords.longitude], 16);
 
-        console.log('End - start map');
-    }
-
-    public findPath = async (latitude: number, longitude: number) => {
-        console.log('Start - findPath');
-
-        this.pathLayer?.clearLayers();
-        const coords = await this.getGeoLocation();
-
-        if (this.routingControl) {
-            this.map?.removeControl(this.routingControl);
-            this.routingControl = null;
+            L.marker([coords.latitude, coords.longitude]).addTo(this.map);
+        } catch (e) {
+            console.log((e as Error).message);
+            result = false;
         }
 
-        this.routingControl = L.Routing.control({
-            waypoints: [
-              L.latLng(coords.latitude, coords.longitude),
-              L.latLng(latitude, longitude)
-            ],
-            router: (L as any).Routing.osrmv1({
-                serviceUrl: 'https://routing.openstreetmap.de/routed-foot/route/v1',
-                profile: 'foot',
-            }),
-             // @ts-ignore
-            lineOptions: {
-                styles: [{ color: 'green', opacity: 0.7, weight: 5 }]
-            },
-            show: false,
-            addWaypoints: false
-        }).addTo(this.map);
+        console.log('End - start map');
 
-        L.circle([latitude, longitude], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 30
-        }).addTo(this.map);
+        return result;
+    }
+
+    public findPath = async (latitude: number, longitude: number): Promise<boolean> => {
+        console.log('Start - findPath');
+
+        let result = true;
+
+        try {
+            this.pathLayer?.clearLayers();
+            const coords = await this.getGeoLocation();
+
+            if (this.routingControl) {
+                this.map?.removeControl(this.routingControl);
+                this.routingControl = null;
+            }
+
+            this.routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(coords.latitude, coords.longitude),
+                    L.latLng(latitude, longitude)
+                ],
+                router: (L as any).Routing.osrmv1({
+                    serviceUrl: 'https://routing.openstreetmap.de/routed-foot/route/v1',
+                    profile: 'foot',
+                }),
+                // @ts-ignore
+                lineOptions: {
+                    styles: [{ color: 'green', opacity: 0.7, weight: 5 }]
+                },
+                show: false,
+                addWaypoints: false
+            }).addTo(this.map);
+
+            const circle = L.circle([latitude, longitude], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 30
+            });
+        
+            circle.addTo(this.pathLayer);
+        } catch (e) {
+            console.log((e as Error).message);
+            result = false;
+        }
 
         console.log('End - findPath');
-    } 
+
+        return result;
+    }
 
     public getGeoLocation = (): Promise<{ latitude: number, longitude: number }> => {
         return new Promise((resolve, reject) => {
@@ -88,14 +108,14 @@ export class MapService {
                 reject('Geolocation not supported');
                 return;
             }
-    
+
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     resolve({
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     });
-                }, 
+                },
                 (error) => {
                     console.error('Error with getting current position!', error);
                     reject(error);
