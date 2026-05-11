@@ -173,7 +173,7 @@ export class Catching extends Page {
                     </form>
                 </div>
 
-                <div class="flex flex-col mt-4 md:ml-8">
+                <div class="flex flex-col md:ml-8">
                     <fieldset class="fieldset">
                         <legend class="fieldset-legend">Catching</legend>
                         <label>
